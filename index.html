@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор карт Таро</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(120, 70, 200, 0.3) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            aspect-ratio: 2/3;
+            background: linear-gradient(145deg, #3a3a5c, #2a2a4c);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .card.selected {
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .card.flipped {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+        }
+
+        .card-back {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            transition: opacity 0.3s;
+        }
+
+        .card-front {
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .card.flipped .card-back {
+            display: none;
+        }
+
+        .card.flipped .card-front {
+            display: flex;
+        }
+
+        .card-front img {
+            max-width: 80%;
+            max-height: 60%;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .card-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .continue-btn:active {
+            transform: translateY(0);
+        }
+
+        .continue-btn.visible {
+            display: block;
+        }
+
+        .counter {
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 Выберите карты Таро</h1>
+        <p class="subtitle">Нажмите на карты, чтобы выбрать их</p>
+        <div class="counter">
+            Выбрано: <span id="selected-count">0</span> / 3
+        </div>
+        <div class="cards-grid" id="cards-grid"></div>
+        <button class="continue-btn" id="continue-btn">Продолжить</button>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // Список карт (используем 12 карт из требований)
+        const availableCards = [
+            { slug: 'the-fool', name: 'Дурак' },
+            { slug: 'the-magician', name: 'Маг' },
+            { slug: 'the-high-priestess', name: 'Верховная Жрица' },
+            { slug: 'the-empress', name: 'Императрица' },
+            { slug: 'the-emperor', name: 'Император' },
+            { slug: 'the-lovers', name: 'Влюблённые' },
+            { slug: 'justice', name: 'Справедливость' },
+            { slug: 'the-hermit', name: 'Отшельник' },
+            { slug: 'the-world', name: 'Мир' },
+            { slug: 'wheel-of-fortune', name: 'Колесо Фортуны' },
+            { slug: 'queen-of-pentacles', name: 'Королева Пентаклей' },
+            { slug: 'six-of-swords', name: 'Шестёрка Мечей' }
+        ];
+
+        // Перемешиваем и берём 6 случайных карт
+        const shuffled = availableCards.sort(() => 0.5 - Math.random());
+        const displayCards = shuffled.slice(0, 6);
+
+        const selectedCards = [];
+        const MAX_CARDS = 3;
+
+        const grid = document.getElementById('cards-grid');
+        const continueBtn = document.getElementById('continue-btn');
+        const countDisplay = document.getElementById('selected-count');
+
+        // Создаём карты
+        displayCards.forEach((card, index) => {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card';
+            cardEl.dataset.index = index;
+            cardEl.dataset.slug = card.slug;
+            cardEl.dataset.name = card.name;
+
+            cardEl.innerHTML = `
+                <div class="card-back">🃏</div>
+                <div class="card-front">
+                    <img src="/static/cards/${card.slug}.jpg" alt="${card.name}" onerror="this.src='/static/cards/placeholder.jpg'">
+                    <div class="card-name">${card.name}</div>
+                </div>
+            `;
+
+            cardEl.addEventListener('click', () => toggleCard(cardEl));
+            grid.appendChild(cardEl);
+        });
+
+        function toggleCard(cardEl) {
+            const index = parseInt(cardEl.dataset.index);
+            const slug = cardEl.dataset.slug;
+            const name = cardEl.dataset.name;
+
+            if (cardEl.classList.contains('selected')) {
+                // Отменяем выбор
+                cardEl.classList.remove('selected', 'flipped');
+                const idx = selectedCards.findIndex(c => c.slug === slug);
+                if (idx > -1) selectedCards.splice(idx, 1);
+            } else {
+                // Выбираем карту
+                if (selectedCards.length >= MAX_CARDS) {
+                    tg.showAlert('Вы можете выбрать максимум 3 карты!');
+                    return;
+                }
+                cardEl.classList.add('selected', 'flipped');
+                selectedCards.push({ slug, reversed: false });
+            }
+
+            updateCounter();
+            updateButton();
+        }
+
+        function updateCounter() {
+            countDisplay.textContent = selectedCards.length;
+        }
+
+        function updateButton() {
+            if (selectedCards.length === MAX_CARDS) {
+                continueBtn.classList.add('visible');
+            } else {
+                continueBtn.classList.remove('visible');
+            }
+        }
+
+        continueBtn.addEventListener('click', () => {
+            if (selectedCards.length === MAX_CARDS) {
+                const data = { cards: selectedCards };
+                tg.sendData(JSON.stringify(data));
+                tg.close();
+            }
+        });
+
+        // Настройка темы Telegram
+        if (tg.colorScheme === 'dark') {
+            document.body.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
+        }
+    </script>
+</body>
+</html>
+

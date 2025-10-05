@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Выбор карт Таро</title>
+    <title>–Т—Л–±–Њ—А –Ї–∞—А—В –Ґ–∞—А–Њ</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -77,7 +77,7 @@
         }
 
         .card.selected::after {
-            content: '✓';
+            content: 'вЬУ';
             position: absolute;
             top: -5px;
             right: -5px;
@@ -159,47 +159,47 @@
     
     <div class="container">
         <div class="header">
-            <h1>🔮 Выберите 3 карты 🔮</h1>
-            <div class="count" id="count">Выбрано: 0 / 3</div>
+            <h1>рЯФЃ –Т—Л–±–µ—А–Є—В–µ 3 –Ї–∞—А—В—Л рЯФЃ</h1>
+            <div class="count" id="count">–Т—Л–±—А–∞–љ–Њ: 0 / 3</div>
         </div>
 
         <div class="cards-grid" id="cardsGrid"></div>
 
-        <button class="continue-btn" id="continueBtn">✨ Продолжить ✨</button>
+        <button class="continue-btn" id="continueBtn">вЬ® –Я—А–Њ–і–Њ–ї–ґ–Є—В—М вЬ®</button>
     </div>
 
     <script>
-        // Инициализация Telegram WebApp
+        // –Ш–љ–Є—Ж–Є–∞–ї–Є–Ј–∞—Ж–Є—П Telegram WebApp
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
 
-        // Данные карт
+        // –Ф–∞–љ–љ—Л–µ –Ї–∞—А—В
         const tarotCards = [
-            { slug: 'the-fool', name: 'Шут', icon: '🃏' },
-            { slug: 'the-magician', name: 'Маг', icon: '🎩' },
-            { slug: 'the-high-priestess', name: 'Верховная Жрица', icon: '🌙' },
-            { slug: 'the-empress', name: 'Императрица', icon: '👑' },
-            { slug: 'the-emperor', name: 'Император', icon: '⚡' },
-            { slug: 'the-hierophant', name: 'Иерофант', icon: '⛪' },
-            { slug: 'the-lovers', name: 'Влюбленные', icon: '💕' },
-            { slug: 'the-chariot', name: 'Колесница', icon: '🏛️' },
-            { slug: 'strength', name: 'Сила', icon: '🦁' },
-            { slug: 'the-hermit', name: 'Отшельник', icon: '🕯️' },
-            { slug: 'wheel-of-fortune', name: 'Колесо Фортуны', icon: '🎡' },
-            { slug: 'justice', name: 'Справедливость', icon: '⚖️' }
+            { slug: 'the-fool', name: '–®—Г—В', icon: 'рЯГП' },
+            { slug: 'the-magician', name: '–Ь–∞–≥', icon: 'рЯО©' },
+            { slug: 'the-high-priestess', name: '–Т–µ—А—Е–Њ–≤–љ–∞—П –Ц—А–Є—Ж–∞', icon: 'рЯМЩ' },
+            { slug: 'the-empress', name: '–Ш–Љ–њ–µ—А–∞—В—А–Є—Ж–∞', icon: 'рЯСС' },
+            { slug: 'the-emperor', name: '–Ш–Љ–њ–µ—А–∞—В–Њ—А', icon: 'вЪ°' },
+            { slug: 'the-hierophant', name: '–Ш–µ—А–Њ—Д–∞–љ—В', icon: 'вЫ™' },
+            { slug: 'the-lovers', name: '–Т–ї—О–±–ї–µ–љ–љ—Л–µ', icon: 'рЯТХ' },
+            { slug: 'the-chariot', name: '–Ъ–Њ–ї–µ—Б–љ–Є—Ж–∞', icon: 'рЯПЫпЄП' },
+            { slug: 'strength', name: '–°–Є–ї–∞', icon: 'рЯ¶Б' },
+            { slug: 'the-hermit', name: '–Ю—В—И–µ–ї—М–љ–Є–Ї', icon: 'рЯХѓпЄП' },
+            { slug: 'wheel-of-fortune', name: '–Ъ–Њ–ї–µ—Б–Њ –§–Њ—А—В—Г–љ—Л', icon: 'рЯО°' },
+            { slug: 'justice', name: '–°–њ—А–∞–≤–µ–і–ї–Є–≤–Њ—Б—В—М', icon: 'вЪЦпЄП' }
         ];
 
         let selectedCards = [];
         const MAX_CARDS = 3;
 
-        // Элементы DOM
+        // –≠–ї–µ–Љ–µ–љ—В—Л DOM
         const cardsGrid = document.getElementById('cardsGrid');
         const countElement = document.getElementById('count');
         const continueBtn = document.getElementById('continueBtn');
         const debugElement = document.getElementById('debug');
 
-        // Функция логирования
+        // –§—Г–љ–Ї—Ж–Є—П –ї–Њ–≥–Є—А–Њ–≤–∞–љ–Є—П
         function log(message) {
             const timestamp = new Date().toLocaleTimeString();
             debugElement.innerHTML += `[${timestamp}] ${message}<br>`;
@@ -207,7 +207,7 @@
             console.log(message);
         }
 
-        // Создание карт
+        // –°–Њ–Ј–і–∞–љ–Є–µ –Ї–∞—А—В
         function createCards() {
             cardsGrid.innerHTML = '';
             
@@ -225,19 +225,19 @@
             });
         }
 
-        // Переключение выбора карты
+        // –Я–µ—А–µ–Ї–ї—О—З–µ–љ–Є–µ –≤—Л–±–Њ—А–∞ –Ї–∞—А—В—Л
         function toggleCard(cardElement, card) {
             const isSelected = cardElement.classList.contains('selected');
             
             if (isSelected) {
-                // Убираем из выбранных
+                // –£–±–Є—А–∞–µ–Љ –Є–Ј –≤—Л–±—А–∞–љ–љ—Л—Е
                 cardElement.classList.remove('selected');
                 selectedCards = selectedCards.filter(c => c.slug !== card.slug);
-                log(`Карта "${card.name}" убрана из выбора`);
+                log(`–Ъ–∞—А—В–∞ "${card.name}" —Г–±—А–∞–љ–∞ –Є–Ј –≤—Л–±–Њ—А–∞`);
             } else {
-                // Добавляем в выбранные (максимум 3)
+                // –Ф–Њ–±–∞–≤–ї—П–µ–Љ –≤ –≤—Л–±—А–∞–љ–љ—Л–µ (–Љ–∞–Ї—Б–Є–Љ—Г–Љ 3)
                 if (selectedCards.length >= MAX_CARDS) {
-                    log(`Максимум ${MAX_CARDS} карт`);
+                    log(`–Ь–∞–Ї—Б–Є–Љ—Г–Љ ${MAX_CARDS} –Ї–∞—А—В`);
                     return;
                 }
                 
@@ -245,37 +245,37 @@
                 selectedCards.push({
                     slug: card.slug,
                     name: card.name,
-                    reversed: Math.random() < 0.3 // 30% шанс перевернутой карты
+                    reversed: Math.random() < 0.3 // 30% —И–∞–љ—Б –њ–µ—А–µ–≤–µ—А–љ—Г—В–Њ–є –Ї–∞—А—В—Л
                 });
-                log(`Карта "${card.name}" добавлена в выбор`);
+                log(`–Ъ–∞—А—В–∞ "${card.name}" –і–Њ–±–∞–≤–ї–µ–љ–∞ –≤ –≤—Л–±–Њ—А`);
             }
             
             updateUI();
         }
 
-        // Обновление интерфейса
+        // –Ю–±–љ–Њ–≤–ї–µ–љ–Є–µ –Є–љ—В–µ—А—Д–µ–є—Б–∞
         function updateUI() {
-            countElement.textContent = `Выбрано: ${selectedCards.length} / ${MAX_CARDS}`;
+            countElement.textContent = `–Т—Л–±—А–∞–љ–Њ: ${selectedCards.length} / ${MAX_CARDS}`;
             
             if (selectedCards.length === MAX_CARDS) {
                 continueBtn.classList.add('show');
-                log('Кнопка "Продолжить" показана');
+                log('–Ъ–љ–Њ–њ–Ї–∞ "–Я—А–Њ–і–Њ–ї–ґ–Є—В—М" –њ–Њ–Ї–∞–Ј–∞–љ–∞');
             } else {
                 continueBtn.classList.remove('show');
             }
         }
 
-        // Обработчик кнопки "Продолжить"
+        // –Ю–±—А–∞–±–Њ—В—З–Є–Ї –Ї–љ–Њ–њ–Ї–Є "–Я—А–Њ–і–Њ–ї–ґ–Є—В—М"
         continueBtn.addEventListener('click', () => {
             if (selectedCards.length !== MAX_CARDS) {
-                log('Ошибка: выбрано не 3 карты');
+                log('–Ю—И–Є–±–Ї–∞: –≤—Л–±—А–∞–љ–Њ –љ–µ 3 –Ї–∞—А—В—Л');
                 return;
             }
             
-            log(`Отправка данных: ${JSON.stringify(selectedCards)}`);
+            log(`–Ю—В–њ—А–∞–≤–Ї–∞ –і–∞–љ–љ—Л—Е: ${JSON.stringify(selectedCards)}`);
             
             try {
-                // Отправляем данные
+                // –Ю—В–њ—А–∞–≤–ї—П–µ–Љ –і–∞–љ–љ—Л–µ
                 const data = {
                     cards: selectedCards.map(card => ({
                         slug: card.slug,
@@ -284,19 +284,19 @@
                 };
                 
                 tg.sendData(JSON.stringify(data));
-                log('✅ Данные отправлены успешно');
+                log('вЬЕ –Ф–∞–љ–љ—Л–µ –Њ—В–њ—А–∞–≤–ї–µ–љ—Л —Г—Б–њ–µ—И–љ–Њ');
                 
-                // Закрываем WebApp
+                // –Ч–∞–Ї—А—Л–≤–∞–µ–Љ WebApp
                 setTimeout(() => {
                     tg.close();
                 }, 1000);
                 
             } catch (error) {
-                log(`❌ Ошибка отправки: ${error.message}`);
+                log(`вЭМ –Ю—И–Є–±–Ї–∞ –Њ—В–њ—А–∞–≤–Ї–Є: ${error.message}`);
                 
-                // Fallback: показываем alert
+                // Fallback: –њ–Њ–Ї–∞–Ј—Л–≤–∞–µ–Љ alert
                 tg.showAlert(
-                    `Выбраны карты: ${selectedCards.map(c => c.name).join(', ')}\n\nСкопируйте и отправьте боту.`,
+                    `–Т—Л–±—А–∞–љ—Л –Ї–∞—А—В—Л: ${selectedCards.map(c => c.name).join(', ')}\n\n–°–Ї–Њ–њ–Є—А—Г–є—В–µ –Є –Њ—В–њ—А–∞–≤—М—В–µ –±–Њ—В—Г.`,
                     () => {
                         setTimeout(() => tg.close(), 2000);
                     }
@@ -304,12 +304,12 @@
             }
         });
 
-        // Инициализация
-        log('WebApp инициализирован');
+        // –Ш–љ–Є—Ж–Є–∞–ї–Є–Ј–∞—Ж–Є—П
+        log('WebApp –Є–љ–Є—Ж–Є–∞–ї–Є–Ј–Є—А–Њ–≤–∞–љ');
         createCards();
         updateUI();
         
-        // Скрываем MainButton
+        // –°–Ї—А—Л–≤–∞–µ–Љ MainButton
         if (tg.MainButton) {
             tg.MainButton.hide();
         }
